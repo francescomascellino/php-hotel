@@ -108,10 +108,10 @@ $hotels = [
             <?php
 
             $park_check = false;
-            var_dump($park_check);
             if ($_GET['parking']) {
                 echo 'checked';
                 $park_check = true;
+                var_dump($park_check);
             }
             var_dump("PARKING: $_GET[parking] - PARKCHECK: $park_check, VOTE: $_GET[vote]");
             ?>
@@ -132,7 +132,10 @@ $hotels = [
 
                     <?php foreach ($hotels as $hotel) : ?>
 
-                        <?php if ($_GET['parking'] == null && $_GET['vote'] == '') : ?>
+                        <?php if (
+                            ($park_check == true && $park_check == $hotel['parking']) ||
+                            ($hotel['vote'] >= $_GET['vote'] && $_GET['vote'] <> '')
+                        ) : ?>
 
                             <tr>
 
@@ -150,9 +153,7 @@ $hotels = [
 
                             </tr>
 
-                        <?php elseif ($hotel['vote'] >= $_GET['vote'] && $_GET['vote'] != '') : ?>
-
-                            <!-- $_GET['parking'] == $hotel['parking']   -->
+                        <?php else : ?>
 
                             <tr>
 
