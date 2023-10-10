@@ -109,11 +109,14 @@ $hotels = [
 
             $park_check = false;
             if ($_GET['parking']) {
-                echo 'checked';
                 $park_check = true;
+
+                echo 'checked';
                 var_dump($park_check);
             }
+
             var_dump("PARKING: $_GET[parking] - PARKCHECK: $park_check, VOTE: $_GET[vote]");
+
             ?>
 
             <table class="table my-3">
@@ -133,10 +136,47 @@ $hotels = [
                     <?php foreach ($hotels as $hotel) : ?>
 
                         <?php if (
-                            ($park_check == true && $park_check == $hotel['parking']) ||
+                            ($park_check == true && $park_check == $hotel['parking']) &&
                             ($hotel['vote'] >= $_GET['vote'] && $_GET['vote'] <> '')
                         ) : ?>
 
+                            <tr>
+
+                                <th scope="row"><?= $hotel["name"] ?></th>
+
+                                <td><?= $hotel["description"] ?></td>
+
+                                <td>
+                                    <?= $hotel["parking"] ? "Si" : "No" ?>
+                                </td>
+
+                                <td><?= $hotel["vote"] ?></td>
+
+                                <td><?= $hotel["distance_to_center"] ?></td>
+
+                            </tr>
+
+                        <?php elseif (
+                            $park_check == false &&
+                            ($hotel['vote'] >= $_GET['vote'] && $_GET['vote'] <> '')
+                        ) : ?>
+                            <tr>
+
+                                <th scope="row"><?= $hotel["name"] ?></th>
+
+                                <td><?= $hotel["description"] ?></td>
+
+                                <td>
+                                    <?= $hotel["parking"] ? "Si" : "No" ?>
+                                </td>
+
+                                <td><?= $hotel["vote"] ?></td>
+
+                                <td><?= $hotel["distance_to_center"] ?></td>
+
+                            </tr>
+
+                        <?php elseif (($park_check == true && $hotel['parking'] == true)) : ?>
                             <tr>
 
                                 <th scope="row"><?= $hotel["name"] ?></th>
