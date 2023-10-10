@@ -72,8 +72,51 @@ $hotels = [
 
     <div class="container">
         <div class="row">
-            <h1>Hotels</h1>
-            <table class="table">
+            <h1 class="text-center my-3">Hotels</h1>
+
+            <form action="" method="GET" class="my-3">
+
+                <div class="row g-3 align-items-center">
+
+                    <div class="form-check col-auto">
+
+                        <input class="form-check-input" type="checkbox" value="true" name="parking" id="parking">
+                        <label class="form-check-label" for="parking">
+                            Parcheggio
+                        </label>
+
+                    </div>
+
+                    <div class="col-auto">
+
+                        <label for="vote" class="col-form-label">Voto</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" id="vote" name="vote" class="form-control" min="1" max="5" aria-describedby="voteHelp">
+                    </div>
+                    <div class="col-auto">
+                        <span id="voteHelp" class="form-text">
+                            (il voto deve essere un valore compreso tra 1 e 5)
+                        </span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: fit-content;">Cerca</button>
+                </div>
+
+            </form>
+
+            <?php
+
+            $park_check = false;
+            var_dump($park_check);
+            if ($_GET['parking']) {
+                echo 'checked';
+                $park_check = true;
+            }
+            var_dump("PARKING: $_GET[parking] - PARKCHECK: $park_check, VOTE: $_GET[vote]");
+            ?>
+
+            <table class="table my-3">
                 <thead>
                     <tr>
                         <th scope="col" class="text-uppercase">Nome</th>
@@ -85,23 +128,49 @@ $hotels = [
                 </thead>
                 <tbody>
 
+                    <!-- Stampare tutti i nostri hotel con tutti i dati disponibili. -->
+
                     <?php foreach ($hotels as $hotel) : ?>
 
-                        <tr>
+                        <?php if ($_GET['parking'] == null && $_GET['vote'] == '') : ?>
 
-                            <th scope="row"><?= $hotel["name"] ?></th>
+                            <tr>
 
-                            <td><?= $hotel["description"] ?></td>
+                                <th scope="row"><?= $hotel["name"] ?></th>
 
-                            <td>
-                                <?= $hotel["parking"] ? "Si" : "No" ?>
-                            </td>
+                                <td><?= $hotel["description"] ?></td>
 
-                            <td><?= $hotel["vote"] ?></td>
+                                <td>
+                                    <?= $hotel["parking"] ? "Si" : "No" ?>
+                                </td>
 
-                            <td><?= $hotel["distance_to_center"] ?></td>
+                                <td><?= $hotel["vote"] ?></td>
 
-                        </tr>
+                                <td><?= $hotel["distance_to_center"] ?></td>
+
+                            </tr>
+
+                        <?php elseif ($hotel['vote'] >= $_GET['vote'] && $_GET['vote'] != '') : ?>
+
+                            <!-- $_GET['parking'] == $hotel['parking']   -->
+
+                            <tr>
+
+                                <th scope="row"><?= $hotel["name"] ?></th>
+
+                                <td><?= $hotel["description"] ?></td>
+
+                                <td>
+                                    <?= $hotel["parking"] ? "Si" : "No" ?>
+                                </td>
+
+                                <td><?= $hotel["vote"] ?></td>
+
+                                <td><?= $hotel["distance_to_center"] ?></td>
+
+                            </tr>
+
+                        <?php endif ?>
 
                     <?php endforeach ?>
 
