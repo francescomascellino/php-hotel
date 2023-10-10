@@ -109,14 +109,6 @@ foreach ($hotels as $hotel) {
         }
     }
 }
-// stelle - se ci sono filtrare
-
-
-// parcheggio e stelle
-
-// tutto - se non ci sono filtri
-
-
 
 ?>
 
