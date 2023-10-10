@@ -54,3 +54,50 @@ $hotels = [
 ];
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP HOTELS</title>
+
+    <!-- BS5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <h1>Hotels</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-uppercase">Nome</th>
+                        <th scope="col" class="text-uppercase">Descrizione</th>
+                        <th scope="col" class="text-uppercase">Parcheggio</th>
+                        <th scope="col" class="text-uppercase">Voto</th>
+                        <th scope="col" class="text-uppercase">Distanza dal centro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($hotels as $hotel) : ?>
+                        <tr>
+                            <th scope="row"><?= $hotel["name"] ?></th>
+                            <td><?= $hotel["description"] ?></td>
+                            <td><?= $hotel["parking"] ?></td>
+                            <td><?= $hotel["vote"] ?></td>
+                            <td><?= $hotel["distance_to_center"] ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>
