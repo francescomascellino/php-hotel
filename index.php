@@ -53,6 +53,71 @@ $hotels = [
 
 ];
 
+// Receuperiamo i dati della richiesta
+$park_check = false;
+
+if (isset($_GET['parking'])) {
+    $park_check = true;
+
+    // echo 'checked';
+    var_dump($park_check);
+}
+
+var_dump("PARKING: $_GET[parking] - PARKCHECK: $park_check, VOTE: $_GET[vote]");
+
+
+
+foreach ($hotels as $hotel) {
+    // se il checkbox è stato spuntato...
+    if ($park_check) {
+        var_dump('1');
+
+        // se $hotel['parking'] è true && è stato cercato un voto
+        if ($hotel['parking'] && isset($_GET['vote']) && $_GET['vote'] > 0 && $hotel['vote'] >= $_GET['vote']) {
+            var_dump('2');
+
+            // gli hotel trovati vengono aggiunti all'array degli hotels filtrati
+            $filteredHotels[] = $hotel;
+
+            // altrimenti se cerchiamo solo hotel con parcheggio
+        } elseif ($hotel['parking']) {
+            var_dump('3');
+
+            // gli hotel trovati vengono aggiunti all'array degli hotels filtrati
+            $filteredHotels[] = $hotel;
+        }
+
+        // altrimenti...
+    } else {
+        var_dump('4');
+
+        // se non cerchiamo parcheggi ma solo voti
+        if (isset($_GET['vote']) && $_GET['vote'] > 0) {
+
+            // se il voto è uguale o maggiore al valore del form
+            if ($hotel['vote'] >= $_GET['vote']) {
+                var_dump('5');
+
+                // gli hotel trovati vengono aggiunti all'array degli hotels filtrati
+                $filteredHotels[] = $hotel;
+            }
+        } else {
+            var_dump('6');
+
+            //se non cerchiamo voti o
+            $filteredHotels[] = $hotel;
+        }
+    }
+}
+// stelle - se ci sono filtrare
+
+
+// parcheggio e stelle
+
+// tutto - se non ci sono filtri
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -105,20 +170,6 @@ $hotels = [
 
             </form>
 
-            <?php
-
-            $park_check = false;
-            if ($_GET['parking']) {
-                $park_check = true;
-
-                echo 'checked';
-                var_dump($park_check);
-            }
-
-            var_dump("PARKING: $_GET[parking] - PARKCHECK: $park_check, VOTE: $_GET[vote]");
-
-            ?>
-
             <table class="table my-3">
                 <thead>
                     <tr>
@@ -133,85 +184,23 @@ $hotels = [
 
                     <!-- Stampare tutti i nostri hotel con tutti i dati disponibili. -->
 
-                    <?php foreach ($hotels as $hotel) : ?>
+                    <?php foreach ($filteredHotels as $hotel) : ?>
 
-                        <?php if (
-                            ($park_check == true && $park_check == $hotel['parking']) &&
-                            ($hotel['vote'] >= $_GET['vote'] && $_GET['vote'] <> '')
-                        ) : ?>
+                        <tr>
 
-                            <tr>
+                            <th scope="row"><?= $hotel["name"] ?></th>
 
-                                <th scope="row"><?= $hotel["name"] ?></th>
+                            <td><?= $hotel["description"] ?></td>
 
-                                <td><?= $hotel["description"] ?></td>
+                            <td>
+                                <?= $hotel["parking"] ? "Si" : "No" ?>
+                            </td>
 
-                                <td>
-                                    <?= $hotel["parking"] ? "Si" : "No" ?>
-                                </td>
+                            <td><?= $hotel["vote"] ?></td>
 
-                                <td><?= $hotel["vote"] ?></td>
+                            <td><?= $hotel["distance_to_center"] ?></td>
 
-                                <td><?= $hotel["distance_to_center"] ?></td>
-
-                            </tr>
-
-                        <?php elseif (
-                            $park_check == false &&
-                            ($hotel['vote'] >= $_GET['vote'] && $_GET['vote'] <> '')
-                        ) : ?>
-                            <tr>
-
-                                <th scope="row"><?= $hotel["name"] ?></th>
-
-                                <td><?= $hotel["description"] ?></td>
-
-                                <td>
-                                    <?= $hotel["parking"] ? "Si" : "No" ?>
-                                </td>
-
-                                <td><?= $hotel["vote"] ?></td>
-
-                                <td><?= $hotel["distance_to_center"] ?></td>
-
-                            </tr>
-
-                        <?php elseif (($park_check == true && $hotel['parking'] == true)) : ?>
-                            <tr>
-
-                                <th scope="row"><?= $hotel["name"] ?></th>
-
-                                <td><?= $hotel["description"] ?></td>
-
-                                <td>
-                                    <?= $hotel["parking"] ? "Si" : "No" ?>
-                                </td>
-
-                                <td><?= $hotel["vote"] ?></td>
-
-                                <td><?= $hotel["distance_to_center"] ?></td>
-
-                            </tr>
-
-                        <?php else : ?>
-
-                            <tr>
-
-                                <th scope="row"><?= $hotel["name"] ?></th>
-
-                                <td><?= $hotel["description"] ?></td>
-
-                                <td>
-                                    <?= $hotel["parking"] ? "Si" : "No" ?>
-                                </td>
-
-                                <td><?= $hotel["vote"] ?></td>
-
-                                <td><?= $hotel["distance_to_center"] ?></td>
-
-                            </tr>
-
-                        <?php endif ?>
+                        </tr>
 
                     <?php endforeach ?>
 
